@@ -2,13 +2,16 @@ const path = require('path')
 const Koa = require('koa')
 const serve = require('koa-static')
 const logger = require('koa-logger')
+const favicon = require('koa-favicon')
 
 const app = new Koa()
 app.use(logger((str, args) => {
-    console.log(str)
+    if(!str.includes("favicon.ico")) {
+        console.log(str)
+    }
 }))
 
-const port = process.env.PORT || 3000
+app.use(favicon(__dirname + '/../client/favicon.ico'));
 
 app.use(serve(path.resolve(__dirname, '..', 'client')))
 
@@ -17,6 +20,8 @@ app.use(userRoutes.routes())
 
 const taskRoutes = require('./routes/tasks')
 app.use(taskRoutes.routes())
+
+const port = process.env.PORT || 3000
 
 app.listen(port)
 
