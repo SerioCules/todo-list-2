@@ -1,8 +1,13 @@
 const path = require('path')
 const Koa = require('koa')
 const serve = require('koa-static')
+const logger = require('koa-logger')
 
 const app = new Koa()
+app.use(logger((str, args) => {
+    console.log(str)
+}))
+
 const port = process.env.PORT || 3000
 
 app.use(serve(path.resolve(__dirname, '..', 'client')))
